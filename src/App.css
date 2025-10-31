@@ -29,11 +29,26 @@
   gap: 20px;
 }
 
+.header-branding {
+  flex: 1;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.header-logo svg {
+  flex-shrink: 0;
+}
+
 .app-title {
   font-size: 36px;
   font-weight: 800;
   color: var(--text-color);
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .app-subtitle {
@@ -319,6 +334,11 @@
     text-align: left;
   }
 
+  .header-logo svg {
+    width: 40px;
+    height: 40px;
+  }
+
   .user-controls {
     width: 100%;
     justify-content: flex-start;
@@ -387,6 +407,11 @@
 
   .app-header {
     padding: 20px;
+  }
+
+  .header-logo svg {
+    width: 32px;
+    height: 32px;
   }
 
   .app-title {
