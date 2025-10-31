@@ -1,8 +1,8 @@
 {
-  "name": "blue-marble-pinpoint",
+  "name": "geoflipper",
   "version": "1.0.0",
-  "description": "Interactive web application for searching and pinpointing addresses on NASA's Blue Marble map",
-  "homepage": "https://[username].github.io/blue-marble-pinpoint",
+  "description": "Geographic intelligence tool with address search and population insights on NASA's Blue Marble satellite imagery",
+  "homepage": "https://enrichedcreations.github.io/GeoFlipper",
   "private": true,
   "dependencies": {
     "axios": "^1.6.2",

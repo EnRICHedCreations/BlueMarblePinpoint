@@ -19,6 +19,13 @@
   padding: 20px 0;
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
 .app-title {
   font-size: 36px;
   font-weight: 800;
@@ -30,6 +37,43 @@
   font-size: 16px;
   color: #666;
   font-weight: 400;
+}
+
+/* User Controls */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.logout-btn svg {
+  flex-shrink: 0;
 }
 
 /* Search Bar */
@@ -168,6 +212,16 @@
     gap: 16px;
   }
 
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .user-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
   .app-title {
     font-size: 28px;
   }
@@ -203,6 +257,20 @@
 
   .app-title {
     font-size: 24px;
+  }
+
+  .user-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .user-email {
+    font-size: 12px;
+  }
+
+  .logout-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .search-input-container {

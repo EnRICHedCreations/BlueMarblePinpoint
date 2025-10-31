@@ -97,8 +97,8 @@ export const MapView: React.FC<MapViewProps> = ({ location }) => {
       {!location && (
         <div className="map-overlay">
           <div className="map-instructions">
-            <h2>🌍 Welcome to Blue Marble Pinpoint</h2>
-            <p>Search for any address to see it on NASA's Blue Marble satellite imagery</p>
+            <h2>🌍 Welcome to GeoFlipper</h2>
+            <p>Search for any address to see population data on NASA's Blue Marble satellite imagery</p>
           </div>
         </div>
       )}
