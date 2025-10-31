@@ -3,7 +3,11 @@
     "allow": [
       "Bash(npm run build:*)",
       "Bash(git init:*)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nFix Google Maps warnings and increase app width\n\n- Added loading=async with callback for optimal performance\n- Fixed types configuration: changed from [''address'', ''establishment'', ''geocode''] to [''geocode''] to prevent API error\n- Removed unused isLoading variable\n- Increased max-width from 1400px to 1920px for wider layout\n- Improved promise handling to prevent multiple simultaneous loads\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)",
+      "Bash(npm run deploy:*)"
     ],
     "deny": [],
     "ask": []

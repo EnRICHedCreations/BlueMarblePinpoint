@@ -4,54 +4,48 @@
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-let isLoading = false;
 let isLoaded = false;
+let loadPromise: Promise<void> | null = null;
 
 export function loadGoogleMapsScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    // Already loaded
-    if (isLoaded || (window as any).google?.maps?.places) {
-      resolve();
-      return;
-    }
+  // Return existing promise if already loading
+  if (loadPromise) {
+    return loadPromise;
+  }
 
-    // Currently loading
-    if (isLoading) {
-      const checkLoaded = setInterval(() => {
-        if ((window as any).google?.maps?.places) {
-          clearInterval(checkLoaded);
-          isLoaded = true;
-          resolve();
-        }
-      }, 100);
-      return;
-    }
+  // Already loaded
+  if (isLoaded || (window as any).google?.maps?.places) {
+    return Promise.resolve();
+  }
 
-    // No API key
-    if (!GOOGLE_MAPS_API_KEY) {
-      reject(new Error('Google Maps API key not configured'));
-      return;
-    }
+  // No API key
+  if (!GOOGLE_MAPS_API_KEY) {
+    return Promise.reject(new Error('Google Maps API key not configured'));
+  }
 
-    isLoading = true;
-
-    // Create script tag
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
-      isLoading = false;
+  loadPromise = new Promise((resolve, reject) => {
+    // Create callback for async loading
+    const callbackName = 'initGoogleMaps';
+    (window as any)[callbackName] = () => {
       isLoaded = true;
+      delete (window as any)[callbackName];
       resolve();
     };
 
+    // Create script tag
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&loading=async&callback=${callbackName}`;
+    script.async = true;
+    script.defer = true;
+
     script.onerror = () => {
-      isLoading = false;
+      loadPromise = null;
+      delete (window as any)[callbackName];
       reject(new Error('Failed to load Google Maps API'));
     };
 
     document.head.appendChild(script);
   });
+
+  return loadPromise;
 }

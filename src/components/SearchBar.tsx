@@ -47,8 +47,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
         const win = window as any;
         if (inputRef.current && win.google?.maps?.places) {
           try {
+            // Fixed: Remove 'address' type as it cannot be mixed with others
+            // Use only 'geocode' which covers all location types
             autocompleteRef.current = new win.google.maps.places.Autocomplete(inputRef.current, {
-              types: ['address', 'establishment', 'geocode'],
+              types: ['geocode'],
               fields: ['formatted_address', 'geometry', 'name'],
             });
 
