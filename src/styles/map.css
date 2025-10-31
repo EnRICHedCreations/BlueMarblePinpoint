@@ -1,0 +1,134 @@
+/**
+ * Map Styles
+ * Styles for map container and components
+ */
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 180px);
+  min-height: 400px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.leaflet-map {
+  z-index: 1;
+}
+
+/* Map Overlay (shown when no location) */
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.map-instructions {
+  text-align: center;
+  padding: 32px;
+  max-width: 500px;
+}
+
+.map-instructions h2 {
+  font-size: 28px;
+  margin-bottom: 16px;
+  color: var(--primary-color);
+}
+
+.map-instructions p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Marker Popup */
+.marker-popup {
+  min-width: 250px;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+
+.popup-content {
+  font-size: 13px;
+}
+
+.popup-content p {
+  margin-bottom: 8px;
+}
+
+.popup-address {
+  color: var(--text-color);
+}
+
+.popup-coordinates {
+  color: #666;
+}
+
+.popup-coordinates code {
+  font-size: 12px;
+  background-color: rgba(0, 102, 204, 0.1);
+  color: var(--primary-color);
+}
+
+.popup-details {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Custom Leaflet Styles */
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.leaflet-popup-content {
+  margin: 16px;
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .map-container {
+    height: calc(100vh - 220px);
+    border-radius: 0;
+  }
+
+  .map-instructions h2 {
+    font-size: 22px;
+  }
+
+  .map-instructions p {
+    font-size: 14px;
+  }
+
+  .marker-popup {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-container {
+    height: calc(100vh - 250px);
+  }
+
+  .popup-content {
+    font-size: 12px;
+  }
+}
