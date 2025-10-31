@@ -75,8 +75,8 @@ function App() {
             OpenCage
           </a>
           {' & '}
-          <a href="https://countriesnow.space" target="_blank" rel="noopener noreferrer">
-            CountriesNow
+          <a href="https://nominatim.openstreetmap.org" target="_blank" rel="noopener noreferrer">
+            Nominatim
           </a>
         </p>
         <div className="footer-links">

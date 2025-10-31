@@ -1,134 +1,65 @@
 /**
  * Population Service
- * Fetches population data from CountriesNow API
+ * Fetches population data from Nominatim OpenStreetMap API
  */
 
 import axios from 'axios';
 
-const BASE_URL = 'https://countriesnow.space/api/v0.1';
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/reverse';
 
 export interface PopulationData {
   country?: string;
   city?: string;
   population?: number;
-  populationCounts?: Array<{
-    year: string;
-    value: number;
-  }>;
+  place_name?: string;
 }
 
 /**
- * Get population data for a country
+ * Get population data from Nominatim reverse geocoding
+ * Uses coordinates to fetch detailed location info including population
  */
-export async function getCountryPopulation(country: string): Promise<PopulationData | null> {
+export async function getPopulationFromCoordinates(
+  lat: number,
+  lng: number
+): Promise<PopulationData | null> {
   try {
-    const response = await axios.post(`${BASE_URL}/countries/population`, {
-      country: country,
+    const response = await axios.get(NOMINATIM_URL, {
+      params: {
+        lat: lat,
+        lon: lng,
+        format: 'json',
+        extratags: 1, // This enables the extratags field which contains population
+        addressdetails: 1,
+      },
+      headers: {
+        'User-Agent': 'BlueMarblePinpoint/1.0', // Nominatim requires User-Agent
+      },
+      timeout: 5000,
     });
 
-    if (response.data?.data?.populationCounts) {
-      const counts = response.data.data.populationCounts;
-      // Get the most recent population count
-      const latest = counts[counts.length - 1];
+    if (response.data?.extratags?.population) {
+      const population = parseInt(response.data.extratags.population);
 
-      return {
-        country: response.data.data.country,
-        population: latest?.value,
-        populationCounts: counts,
-      };
+      if (!isNaN(population)) {
+        return {
+          population: population,
+          city: response.data.address?.city ||
+                response.data.address?.town ||
+                response.data.address?.village ||
+                response.data.address?.county,
+          country: response.data.address?.country,
+          place_name: response.data.name || response.data.display_name,
+        };
+      }
     }
 
     return null;
   } catch (error) {
-    console.warn('Failed to fetch country population:', error);
+    console.warn('Failed to fetch population from Nominatim:', error);
     return null;
   }
 }
 
-/**
- * Get population data for a city
- */
-export async function getCityPopulation(city: string, country?: string): Promise<PopulationData | null> {
-  try {
-    const response = await axios.post(`${BASE_URL}/countries/population/cities`, {
-      city: city,
-      country: country,
-    });
-
-    if (response.data?.data) {
-      return {
-        city: response.data.data.city,
-        country: response.data.data.country,
-        population: response.data.data.populationCounts?.[0]?.value,
-        populationCounts: response.data.data.populationCounts,
-      };
-    }
-
-    return null;
-  } catch (error) {
-    console.warn('Failed to fetch city population:', error);
-    return null;
-  }
-}
-
-/**
- * Extract location information from address components
- * Prioritizes city and county for population data
- */
-export function extractLocationInfo(components: any): {
-  city?: string;
-  county?: string;
-  country?: string;
-} {
-  const result: { city?: string; county?: string; country?: string } = {};
-
-  if (!components) return result;
-
-  // Extract country
-  if (components.country) {
-    result.country = components.country;
-  }
-
-  // Extract county
-  if (components.county) {
-    result.county = components.county;
-  }
-
-  // Extract city - try multiple possible fields
-  if (components.city) {
-    result.city = components.city;
-  } else if (components.town) {
-    result.city = components.town;
-  } else if (components.village) {
-    result.city = components.village;
-  } else if (components.municipality) {
-    result.city = components.municipality;
-  }
-
-  return result;
-}
-
-/**
- * Get population data for a location based on address components
- * Prioritizes city population, falls back to county
- */
-export async function getLocationPopulation(components: any): Promise<PopulationData | null> {
-  const { city, county, country } = extractLocationInfo(components);
-
-  // Try city population first
-  if (city && country) {
-    const cityPop = await getCityPopulation(city, country);
-    if (cityPop) return cityPop;
-  }
-
-  // Try county as fallback
-  if (county && country) {
-    const countyPop = await getCityPopulation(county, country);
-    if (countyPop) return countyPop;
-  }
-
-  return null;
-}
 
 /**
  * Format population number with commas

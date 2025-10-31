@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from 'react';
 import { geocodeAddress, isCoordinateString, parseCoordinates } from '../services/geocoding';
-import { getLocationPopulation } from '../services/populationService';
+import { getPopulationFromCoordinates } from '../services/populationService';
 import { LocationData } from '../types/location';
 import { GeocodingError, GeocodingStatus } from '../types/api';
 
@@ -46,16 +46,14 @@ export function useGeocoding(): UseGeocodingReturn {
       // Geocode as address
       const result = await geocodeAddress(address);
 
-      // Fetch population data for the location
-      if (result.components) {
-        const populationData = await getLocationPopulation(result.components);
-        if (populationData && populationData.population) {
-          result.population = {
-            value: populationData.population,
-            city: populationData.city,
-            country: populationData.country,
-          };
-        }
+      // Fetch population data using coordinates from Nominatim
+      const populationData = await getPopulationFromCoordinates(result.lat, result.lng);
+      if (populationData && populationData.population) {
+        result.population = {
+          value: populationData.population,
+          city: populationData.city,
+          country: populationData.country,
+        };
       }
 
       setLocation(result);
