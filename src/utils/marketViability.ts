@@ -11,33 +11,40 @@ export interface MarketStatus {
 
 /**
  * Get market status based on population
- * - Below 5,000: Red, "Likely Bad Market"
- * - 5,000-10,000: Red, "Maybe Okay Market"
- * - 10,000-30,000: Yellow, "Okay Market"
- * - Above 30,000: Green, "Good Market"
+ * - 0-10,000: Red, "Unlikely a Good Market"
+ * - 10,000-30,000: Orange, "Likely a Decent Market"
+ * - 30,000-50,000: Yellow, "Decent Market"
+ * - 50,000-100,000: Light green, "Good Market"
+ * - Above 100,000: Dark green, "Great Market"
  */
 export function getMarketStatus(population: number): MarketStatus {
-  if (population < 5000) {
+  if (population < 10000) {
     return {
-      label: 'Likely Bad Market',
+      label: 'Unlikely a Good Market',
       color: '#D32F2F',
       backgroundColor: '#FFEBEE',
     };
-  } else if (population < 10000) {
+  } else if (population < 30000) {
     return {
-      label: 'Maybe Okay Market',
-      color: '#D32F2F',
-      backgroundColor: '#FFEBEE',
-    };
-  } else if (population <= 30000) {
-    return {
-      label: 'Okay Market',
+      label: 'Likely a Decent Market',
       color: '#F57C00',
       backgroundColor: '#FFF3E0',
     };
-  } else {
+  } else if (population < 50000) {
+    return {
+      label: 'Decent Market',
+      color: '#FBC02D',
+      backgroundColor: '#FFFDE7',
+    };
+  } else if (population < 100000) {
     return {
       label: 'Good Market',
+      color: '#7CB342',
+      backgroundColor: '#F1F8E9',
+    };
+  } else {
+    return {
+      label: 'Great Market',
       color: '#388E3C',
       backgroundColor: '#E8F5E9',
     };
