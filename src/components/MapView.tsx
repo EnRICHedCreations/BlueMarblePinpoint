@@ -102,6 +102,21 @@ export const MapView: React.FC<MapViewProps> = ({ location }) => {
           </div>
         </div>
       )}
+
+      {location && location.population && (
+        <div className="population-overlay">
+          <div className="population-card">
+            <div className="population-icon">👥</div>
+            <div className="population-info">
+              <div className="population-label">Population</div>
+              <div className="population-value">{formatPopulation(location.population.value)}</div>
+              {location.population.city && (
+                <div className="population-place">{location.population.city}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
