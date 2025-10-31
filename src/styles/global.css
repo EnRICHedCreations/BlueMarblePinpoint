@@ -4,17 +4,22 @@
  */
 
 :root {
-  --primary-color: #0066CC;
-  --secondary-color: #00A6A6;
-  --success-color: #4CAF50;
-  --error-color: #F44336;
-  --bg-color: #F5F5F5;
+  --primary-color: #b69856;
+  --primary-dark: #6e5732;
+  --secondary-color: #8a7547;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
+  --bg-color: #151515;
   --text-color: #333333;
-  --border-color: #DDDDDD;
+  --border-color: #e0e0e0;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
   --radius: 8px;
+  --radius-lg: 16px;
   --transition: all 0.3s ease;
+  --gold-light: #b69856;
+  --gold-dark: #6e5732;
 }
 
 * {
