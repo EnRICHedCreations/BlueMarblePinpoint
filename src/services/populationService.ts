@@ -31,9 +31,8 @@ export async function getPopulationFromCoordinates(
         extratags: 1, // This enables the extratags field which contains population
         addressdetails: 1,
       },
-      headers: {
-        'User-Agent': 'BlueMarblePinpoint/1.0', // Nominatim requires User-Agent
-      },
+      // Note: User-Agent header cannot be set in browser (browser blocks it for security)
+      // Nominatim will use the browser's default User-Agent
       timeout: 5000,
     });
 
