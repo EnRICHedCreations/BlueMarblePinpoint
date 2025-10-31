@@ -45,15 +45,22 @@ export function useGeocoding(): UseGeocodingReturn {
 
       // Geocode as address
       const result = await geocodeAddress(address);
+      console.log('Geocoded location:', result);
 
       // Fetch population data using coordinates from Nominatim
+      console.log('Attempting to fetch population data...');
       const populationData = await getPopulationFromCoordinates(result.lat, result.lng);
+      console.log('Population data received:', populationData);
+
       if (populationData && populationData.population) {
         result.population = {
           value: populationData.population,
           city: populationData.city,
           country: populationData.country,
         };
+        console.log('Population added to location:', result.population);
+      } else {
+        console.log('No population data available for this location');
       }
 
       setLocation(result);

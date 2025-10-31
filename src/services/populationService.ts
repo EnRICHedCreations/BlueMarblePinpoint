@@ -23,6 +23,8 @@ export async function getPopulationFromCoordinates(
   lng: number
 ): Promise<PopulationData | null> {
   try {
+    console.log('Fetching population for coordinates:', lat, lng);
+
     const response = await axios.get(NOMINATIM_URL, {
       params: {
         lat: lat,
@@ -36,11 +38,15 @@ export async function getPopulationFromCoordinates(
       timeout: 5000,
     });
 
+    console.log('Nominatim response:', response.data);
+    console.log('Extratags:', response.data?.extratags);
+    console.log('Population value:', response.data?.extratags?.population);
+
     if (response.data?.extratags?.population) {
       const population = parseInt(response.data.extratags.population);
 
       if (!isNaN(population)) {
-        return {
+        const result = {
           population: population,
           city: response.data.address?.city ||
                 response.data.address?.town ||
@@ -49,12 +55,15 @@ export async function getPopulationFromCoordinates(
           country: response.data.address?.country,
           place_name: response.data.name || response.data.display_name,
         };
+        console.log('Population data found:', result);
+        return result;
       }
     }
 
+    console.log('No population data found in Nominatim response');
     return null;
   } catch (error) {
-    console.warn('Failed to fetch population from Nominatim:', error);
+    console.error('Failed to fetch population from Nominatim:', error);
     return null;
   }
 }
