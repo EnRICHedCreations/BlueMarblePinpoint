@@ -89,6 +89,16 @@
   font-size: 12px;
 }
 
+.popup-population {
+  color: #2E7D32;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
 /* Custom Leaflet Styles */
 .leaflet-popup-content-wrapper {
   border-radius: var(--radius);

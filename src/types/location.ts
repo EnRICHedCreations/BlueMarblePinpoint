@@ -12,6 +12,11 @@ export interface LocationData extends Coordinates {
   address: string;
   formatted: string;
   components?: AddressComponents;
+  population?: {
+    value: number;
+    city?: string;
+    country?: string;
+  };
 }
 
 export interface AddressComponents {

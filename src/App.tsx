@@ -8,6 +8,7 @@ import { MapView } from './components/MapView';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
 import { useGeocoding } from './hooks/useGeocoding';
+import { formatPopulation } from './services/populationService';
 import './App.css';
 import './styles/global.css';
 import './styles/map.css';
@@ -47,6 +48,12 @@ function App() {
         <div className="result-info">
           <p className="result-info-text">
             ✓ Location found: {location.formatted || location.address}
+            {location.population && (
+              <span style={{ marginLeft: '12px', fontSize: '13px' }}>
+                | Population: {formatPopulation(location.population.value)}
+                {location.population.city && ` (${location.population.city})`}
+              </span>
+            )}
           </p>
         </div>
       )}
@@ -62,10 +69,14 @@ function App() {
           Powered by{' '}
           <a href="https://earthdata.nasa.gov/gibs" target="_blank" rel="noopener noreferrer">
             NASA GIBS
-          </a>{' '}
-          &{' '}
+          </a>
+          {', '}
           <a href="https://opencagedata.com" target="_blank" rel="noopener noreferrer">
             OpenCage
+          </a>
+          {' & '}
+          <a href="https://countriesnow.space" target="_blank" rel="noopener noreferrer">
+            CountriesNow
           </a>
         </p>
         <div className="footer-links">

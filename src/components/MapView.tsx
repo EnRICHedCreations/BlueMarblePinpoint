@@ -14,6 +14,7 @@ import {
   SEARCH_RESULT_ZOOM,
 } from '../services/mapConfig';
 import { formatCoordinates, formatAddress } from '../utils/formatters';
+import { formatPopulation } from '../services/populationService';
 
 interface MapViewProps {
   location: LocationData | null;
@@ -76,6 +77,12 @@ export const MapView: React.FC<MapViewProps> = ({ location }) => {
                   {location.components?.country && (
                     <p className="popup-details">
                       <strong>Country:</strong> {location.components.country}
+                    </p>
+                  )}
+                  {location.population && (
+                    <p className="popup-population">
+                      <strong>Population:</strong> {formatPopulation(location.population.value)}
+                      {location.population.city && ` (${location.population.city})`}
                     </p>
                   )}
                 </div>
