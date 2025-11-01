@@ -6,6 +6,7 @@
 const GHL_API_BASE = 'https://services.leadconnectorhq.com';
 const GHL_API_KEY = 'pit-5bc67c72-0396-4b9f-9a7c-3d061aa76d83';
 const GHL_API_VERSION = '2021-07-28';
+const GHL_LOCATION_ID = '5sLuFTeElBBpk6eVuqkW';
 
 export interface GHLOpportunity {
   id: string;
@@ -41,12 +42,13 @@ export async function searchOpportunities(
   try {
     const url = `${GHL_API_BASE}/opportunities/search`;
 
-    // Build request body for v2 API
-    const requestBody: any = {};
+    // Use provided location ID or default
+    const activeLocationId = locationId || GHL_LOCATION_ID;
 
-    if (locationId) {
-      requestBody.location_id = locationId;
-    }
+    // Build request body for v2 API
+    const requestBody: any = {
+      location_id: activeLocationId,
+    };
 
     if (query && query.trim()) {
       requestBody.query = query.trim();
