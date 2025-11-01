@@ -1,10 +1,11 @@
 /**
  * GoHighLevel API Service
- * Search opportunities using GHL API
+ * Search opportunities using GHL API v2
  */
 
-const GHL_API_BASE = 'https://rest.gohighlevel.com/v1';
+const GHL_API_BASE = 'https://services.leadconnectorhq.com';
 const GHL_API_KEY = 'pit-5bc67c72-0396-4b9f-9a7c-3d061aa76d83';
+const GHL_API_VERSION = '2021-07-28';
 
 export interface GHLOpportunity {
   id: string;
@@ -31,36 +32,41 @@ export interface GHLSearchResult {
 }
 
 /**
- * Search opportunities in GoHighLevel
+ * Search opportunities in GoHighLevel using API v2
  */
 export async function searchOpportunities(
   query: string,
   locationId?: string
 ): Promise<GHLSearchResult> {
   try {
-    const params = new URLSearchParams();
+    const url = `${GHL_API_BASE}/opportunities/search`;
+
+    // Build request body for v2 API
+    const requestBody: any = {};
 
     if (locationId) {
-      params.append('location_id', locationId);
+      requestBody.location_id = locationId;
     }
 
     if (query && query.trim()) {
-      params.append('query', query.trim());
+      requestBody.query = query.trim();
     }
 
-    const url = `${GHL_API_BASE}/opportunities/search?${params.toString()}`;
-
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${GHL_API_KEY}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Version': GHL_API_VERSION,
       },
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
       console.error(`GHL API Error: ${response.status} - ${response.statusText}`);
+      console.error('Error details:', errorText);
       return {
         success: false,
         error: `API returned ${response.status}: ${response.statusText}`,
