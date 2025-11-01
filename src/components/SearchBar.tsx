@@ -6,6 +6,8 @@
 import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import { validateAddress, sanitizeInput } from '../utils/validators';
 import { loadGoogleMapsScript } from '../utils/loadGoogleMaps';
+import { isInIframe } from '../utils/iframeDetection';
+import { OpportunitiesSearchBar } from './OpportunitiesSearchBar';
 
 interface SearchBarProps {
   onSearch: (address: string) => void;
@@ -16,8 +18,14 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false, onOpenTutorial }) => {
   const [inputValue, setInputValue] = useState('');
   const [validationError, setValidationError] = useState('');
+  const [showGHLSearch, setShowGHLSearch] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const autocompleteRef = useRef<any>(null);
+
+  // Check if we're in an iframe on mount
+  useEffect(() => {
+    setShowGHLSearch(isInIframe());
+  }, []);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,8 +91,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
 
   return (
     <div className="search-bar">
-      <form onSubmit={handleSubmit} className="search-form">
-        <div className="search-input-container">
+      <div className={`search-bar-wrapper ${showGHLSearch ? 'dual-search' : ''}`}>
+        <form onSubmit={handleSubmit} className="search-form">
+          <div className="search-input-container">
           <input
             ref={inputRef}
             type="text"
@@ -159,6 +168,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
           </div>
         )}
       </form>
+
+        {showGHLSearch && <OpportunitiesSearchBar />}
+      </div>
     </div>
   );
 };
