@@ -10,9 +10,10 @@ import { loadGoogleMapsScript } from '../utils/loadGoogleMaps';
 interface SearchBarProps {
   onSearch: (address: string) => void;
   isLoading?: boolean;
+  onOpenTutorial?: () => void;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false, onOpenTutorial }) => {
   const [inputValue, setInputValue] = useState('');
   const [validationError, setValidationError] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -104,6 +105,29 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
           >
             {isLoading ? '⏳' : '🔍'}
           </button>
+          {onOpenTutorial && (
+            <button
+              type="button"
+              className="tutorial-button"
+              onClick={onOpenTutorial}
+              aria-label="Open Tutorial"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              <span>Tutorial</span>
+            </button>
+          )}
         </div>
         {validationError && (
           <div id="search-error" className="validation-error" role="alert">

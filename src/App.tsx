@@ -3,21 +3,25 @@
  * Main Application Component
  */
 
+import { useState } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { MapView } from './components/MapView';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
 import { LoginModal } from './components/LoginModal';
+import { TutorialModal } from './components/TutorialModal';
 import { useGeocoding } from './hooks/useGeocoding';
 import { useAuth } from './contexts/AuthContext';
 import { formatPopulation } from './services/populationService';
 import './App.css';
 import './styles/global.css';
 import './styles/map.css';
+import './styles/tutorial.css';
 
 function App() {
   const { isAuthenticated, userEmail, logout } = useAuth();
   const { location, status, error, search } = useGeocoding();
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
 
   const handleSearch = (address: string) => {
     search(address);
@@ -92,59 +96,12 @@ function App() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h2 className="hero-title">Find Profitable Markets for Your Deals</h2>
-          <p className="hero-description">
-            Use geographic intelligence to identify viable markets for your wholesale real estate deals.
-            Search any address to instantly see population data and market viability.
-          </p>
-          <ul className="hero-features">
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              Real-time population data
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              Market viability ratings
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              NASA satellite imagery
-            </li>
-          </ul>
-        </div>
-        <div className="hero-video">
-          <div className="video-container">
-            <div className="video-placeholder">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="60"
-                height="60"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-              <p>Tutorial Coming Soon</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Search Bar */}
-      <SearchBar onSearch={handleSearch} isLoading={status === 'loading'} />
+      <SearchBar
+        onSearch={handleSearch}
+        isLoading={status === 'loading'}
+        onOpenTutorial={() => setIsTutorialOpen(true)}
+      />
 
       {/* Status Messages */}
       {status === 'loading' && <LoadingSpinner message="Searching location..." />}
@@ -201,6 +158,9 @@ function App() {
           © {new Date().getFullYear()} GeoFlipper. Built with React & TypeScript.
         </p>
       </footer>
+
+      {/* Tutorial Modal */}
+      <TutorialModal isOpen={isTutorialOpen} onClose={() => setIsTutorialOpen(false)} />
     </div>
   );
 }
