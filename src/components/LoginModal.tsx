@@ -11,6 +11,7 @@ export const LoginModal: React.FC = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [isUpgradeRequired, setIsUpgradeRequired] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,11 +30,13 @@ export const LoginModal: React.FC = () => {
     // Validate email format
     if (!isValidEmail(trimmedEmail)) {
       setError('Please enter a valid email address.');
+      setIsUpgradeRequired(false);
       return;
     }
 
     // Clear previous errors
     setError('');
+    setIsUpgradeRequired(false);
     setIsSubmitting(true);
 
     try {
@@ -41,12 +44,13 @@ export const LoginModal: React.FC = () => {
 
       if (!result.success) {
         setError('Unable to verify membership. Please try again later.');
+        setIsUpgradeRequired(false);
         console.error('Authentication error:', result.error);
         return;
       }
 
       if (!result.isMember || !result.isPremiumAnnual) {
-        setError('Access denied, please upgrade to Annual at https://www.skool.com/how-to-wholesale/plans');
+        setIsUpgradeRequired(true);
         console.log('Access denied for:', trimmedEmail);
         return;
       }
@@ -55,6 +59,7 @@ export const LoginModal: React.FC = () => {
       console.log('Premium (Annual) member verified:', trimmedEmail);
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
+      setIsUpgradeRequired(false);
       console.error('Login error:', err);
     } finally {
       setIsSubmitting(false);
@@ -65,6 +70,9 @@ export const LoginModal: React.FC = () => {
     setEmail(e.target.value);
     if (error) {
       setError('');
+    }
+    if (isUpgradeRequired) {
+      setIsUpgradeRequired(false);
     }
   };
 
@@ -105,7 +113,7 @@ export const LoginModal: React.FC = () => {
                 ref={inputRef}
                 type="email"
                 id="loginEmail"
-                className={`form-input ${error ? 'error' : ''}`}
+                className={`form-input ${error || isUpgradeRequired ? 'error' : ''}`}
                 placeholder="your.email@example.com"
                 value={email}
                 onChange={handleInputChange}
@@ -113,6 +121,19 @@ export const LoginModal: React.FC = () => {
                 disabled={isSubmitting}
               />
               {error && <div className="error-message show">{error}</div>}
+              {isUpgradeRequired && (
+                <div className="error-message show">
+                  Access denied, please upgrade to Annual at{' '}
+                  <a
+                    href="https://www.skool.com/how-to-wholesale/plans"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'inherit', textDecoration: 'underline' }}
+                  >
+                    https://www.skool.com/how-to-wholesale/plans
+                  </a>
+                </div>
+              )}
             </div>
 
             <button type="submit" className="login-btn" disabled={isSubmitting}>
