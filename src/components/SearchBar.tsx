@@ -90,7 +90,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Start typing an address..."
+            placeholder="💡 Tip: Start typing an address and select from suggestions"
             className={`search-input ${validationError ? 'error' : ''}`}
             disabled={isLoading}
             aria-label="Search address"
@@ -135,9 +135,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
           </div>
         )}
       </form>
-      <div className="search-hint">
-        💡 Tip: Start typing an address and select from suggestions, or enter coordinates like "48.8584, 2.2945"
-      </div>
     </div>
   );
 };

@@ -12,7 +12,6 @@ import { LoginModal } from './components/LoginModal';
 import { TutorialModal } from './components/TutorialModal';
 import { useGeocoding } from './hooks/useGeocoding';
 import { useAuth } from './contexts/AuthContext';
-import { formatPopulation } from './services/populationService';
 import './App.css';
 import './styles/global.css';
 import './styles/map.css';
@@ -107,20 +106,6 @@ function App() {
       {status === 'loading' && <LoadingSpinner message="Searching location..." />}
 
       {status === 'error' && error && <ErrorMessage error={error} onRetry={handleRetry} />}
-
-      {status === 'success' && location && (
-        <div className="result-info">
-          <p className="result-info-text">
-            ✓ Location found: {location.formatted || location.address}
-            {location.population && (
-              <span style={{ marginLeft: '12px', fontSize: '13px' }}>
-                | Population: {formatPopulation(location.population.value)}
-                {location.population.city && ` (${location.population.city})`}
-              </span>
-            )}
-          </p>
-        </div>
-      )}
 
       {/* Map */}
       <main className="app-content">

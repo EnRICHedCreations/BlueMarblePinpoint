@@ -9,17 +9,17 @@
   min-height: 100vh;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 40px;
-  gap: 20px;
+  padding: 0;
+  gap: 0;
 }
 
 /* Header */
 .app-header {
-  padding: 40px;
+  padding: 12px 40px;
   background: white;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 20px;
+  border-radius: 0;
+  box-shadow: var(--shadow);
+  margin-bottom: 0;
 }
 
 .header-content {
@@ -36,36 +36,39 @@
 .header-logo {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .header-logo svg {
   flex-shrink: 0;
+  width: 36px;
+  height: 36px;
 }
 
 .app-title {
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--text-color);
   margin: 0;
 }
 
 .app-subtitle {
-  font-size: 16px;
+  font-size: 13px;
   color: #666;
   font-weight: 400;
+  line-height: 1.3;
 }
 
 /* User Controls */
 .user-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .user-email {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   font-weight: 500;
 }
@@ -73,13 +76,13 @@
 .logout-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
+  gap: 6px;
+  padding: 8px 14px;
   background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -92,6 +95,8 @@
 
 .logout-btn svg {
   flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 /* Hero Section */
@@ -190,10 +195,7 @@
 
 /* Search Bar */
 .search-bar {
-  background: white;
-  padding: 24px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  margin: 0 20px 20px 20px;
 }
 
 .search-form {
@@ -290,30 +292,18 @@
   border-left: 4px solid var(--error-color);
 }
 
-.search-hint {
-  font-size: 13px;
-  color: #666;
-  text-align: center;
-  margin-top: 8px;
-}
 
 /* Main Content */
 .app-content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 0 20px 20px 20px;
 }
 
-/* Footer */
+/* Footer - Hidden to prevent scrolling */
 .app-footer {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  margin-top: 32px;
-  font-size: 13px;
-  color: #666;
+  display: none;
 }
 
 .footer-links {
@@ -348,12 +338,12 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .app {
-    padding: 12px;
-    gap: 16px;
+    padding: 0;
+    gap: 0;
   }
 
   .app-header {
-    padding: 24px;
+    padding: 12px 20px;
   }
 
   .header-content {
@@ -362,8 +352,8 @@
   }
 
   .header-logo svg {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 
   .user-controls {
@@ -372,15 +362,16 @@
   }
 
   .app-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .app-subtitle {
-    font-size: 14px;
+    font-size: 13px;
   }
 
-  .app-footer {
-    padding: 24px;
+  .search-bar {
+    margin: 0 16px 16px 16px;
+    padding: 16px;
   }
 
   .hero-section {
@@ -426,42 +417,48 @@
     padding: 12px 20px;
     font-size: 14px;
   }
-
-  .search-hint {
-    font-size: 12px;
-  }
 }
 
 @media (max-width: 480px) {
   .app {
-    padding: 8px;
+    padding: 0;
   }
 
   .app-header {
-    padding: 20px;
+    padding: 10px 16px;
   }
 
   .header-logo svg {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   .app-title {
-    font-size: 24px;
+    font-size: 20px;
   }
 
-  .user-controls {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .user-email {
+  .app-subtitle {
     font-size: 12px;
   }
 
+  .user-controls {
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .user-email {
+    font-size: 11px;
+  }
+
   .logout-btn {
-    width: 100%;
-    justify-content: center;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .search-bar {
+    margin: 0 12px 12px 12px;
+    padding: 12px;
   }
 
   .hero-section {

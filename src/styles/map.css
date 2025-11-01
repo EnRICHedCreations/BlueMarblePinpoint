@@ -6,9 +6,9 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 250px);
   min-height: 400px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
 }
