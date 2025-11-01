@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string): Promise<AuthResult> => {
     const result = await checkMemberStatus(email);
 
-    if (result.success && result.isMember) {
+    if (result.success && result.isMember && result.isPremiumAnnual) {
       saveEmail(email);
       setIsAuthenticated(true);
       setUserEmail(email);

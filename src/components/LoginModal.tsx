@@ -45,14 +45,14 @@ export const LoginModal: React.FC = () => {
         return;
       }
 
-      if (!result.isMember) {
-        setError('Access denied. This application requires an active membership.');
+      if (!result.isMember || !result.isPremiumAnnual) {
+        setError('Access denied, please upgrade to Annual at https://www.skool.com/how-to-wholesale/plans');
         console.log('Access denied for:', trimmedEmail);
         return;
       }
 
       // Success - context will update and modal will disappear
-      console.log('Member verified:', trimmedEmail);
+      console.log('Premium (Annual) member verified:', trimmedEmail);
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
       console.error('Login error:', err);
