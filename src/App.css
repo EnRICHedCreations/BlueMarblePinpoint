@@ -282,6 +282,36 @@
   flex-shrink: 0;
 }
 
+.bluemarble-button {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 100%);
+  color: white;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.bluemarble-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(182, 152, 86, 0.4);
+  text-decoration: none;
+}
+
+.bluemarble-button:active {
+  transform: translateY(0);
+}
+
+.bluemarble-button svg {
+  flex-shrink: 0;
+}
+
 .validation-error {
   color: var(--error-color);
   font-size: 14px;
@@ -417,6 +447,11 @@
     padding: 12px 20px;
     font-size: 14px;
   }
+
+  .bluemarble-button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -487,6 +522,12 @@
   }
 
   .tutorial-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .bluemarble-button {
     width: 100%;
     padding: 12px;
     font-size: 14px;
