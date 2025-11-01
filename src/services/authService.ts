@@ -43,15 +43,15 @@ export async function checkMemberStatus(email: string): Promise<AuthResult> {
 
     // Check if user is a member
     if (data.isMember === true) {
-      // Check if membership level is Premium (Annual)
-      const isPremiumAnnual = data.membershipLevel === 'Premium (Annual)';
+      // Check if annual member (skool_annual_member === 1)
+      const isPremiumAnnual = data.member && data.member.skool_annual_member === 1;
 
       if (isPremiumAnnual) {
-        console.log('✅ SUCCESS: Premium (Annual) member confirmed.');
+        console.log('✅ SUCCESS: Annual member confirmed.');
         return { success: true, isMember: true, isPremiumAnnual: true };
       } else {
-        console.log('❌ FAILURE: User is a member but not Premium (Annual).');
-        console.log('Membership level:', data.membershipLevel);
+        console.log('❌ FAILURE: User is a member but not an annual member.');
+        console.log('Member data:', data.member);
         return { success: true, isMember: true, isPremiumAnnual: false };
       }
     } else {
