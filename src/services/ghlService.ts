@@ -45,45 +45,42 @@ export interface GHLSearchResult {
 }
 
 /**
- * Format address from opportunity contact data
+ * Format address from opportunity data
+ * Priority: opportunity name (often contains address) > structured contact fields > structured opportunity fields
  */
 export function formatOpportunityAddress(opportunity: GHLOpportunity): string | null {
   console.log('Formatting address for opportunity:', opportunity);
 
-  // Check both contact level and opportunity level for address fields
-  const contactAddress = opportunity.contact;
+  // Priority 1: Use opportunity name if it exists (common case where address is in the name)
+  if (opportunity.name && opportunity.name.trim()) {
+    console.log('Using opportunity name as address:', opportunity.name);
+    return opportunity.name.trim();
+  }
 
-  // Try contact address first
+  // Priority 2: Check structured address fields at contact level
+  const contactAddress = opportunity.contact;
   let address1 = contactAddress?.address1;
   let city = contactAddress?.city;
   let state = contactAddress?.state;
   let postalCode = contactAddress?.postalCode;
   let country = contactAddress?.country;
 
-  // Fallback to opportunity level if contact fields are empty
+  // Priority 3: Fallback to opportunity level structured fields
   if (!address1 && opportunity.address1) address1 = opportunity.address1;
   if (!city && opportunity.city) city = opportunity.city;
   if (!state && opportunity.state) state = opportunity.state;
   if (!postalCode && opportunity.postalCode) postalCode = opportunity.postalCode;
   if (!country && opportunity.country) country = opportunity.country;
 
-  // Build address parts that exist
+  // Build structured address if parts exist
   const parts: string[] = [];
-
   if (address1) parts.push(address1);
   if (city) parts.push(city);
   if (state) parts.push(state);
   if (postalCode) parts.push(postalCode);
   if (country) parts.push(country);
 
-  let formattedAddress = parts.length > 0 ? parts.join(', ') : null;
-
-  // If no structured address found, try to extract from opportunity name
-  if (!formattedAddress && opportunity.name) {
-    console.log('No structured address found, using opportunity name:', opportunity.name);
-    formattedAddress = opportunity.name;
-  }
-
+  const formattedAddress = parts.length > 0 ? parts.join(', ') : null;
   console.log('Formatted address:', formattedAddress);
 
   return formattedAddress;

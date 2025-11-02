@@ -29,16 +29,25 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
   }, []);
 
   const handleOpportunitySelect = (opportunity: GHLOpportunity) => {
-    console.log('Opportunity selected:', opportunity);
+    console.log('=== OPPORTUNITY SELECTED ===');
+    console.log('Full opportunity object:', JSON.stringify(opportunity, null, 2));
+    console.log('Opportunity name:', opportunity.name);
+    console.log('Opportunity name type:', typeof opportunity.name);
+
     const address = formatOpportunityAddress(opportunity);
     console.log('Extracted address:', address);
+    console.log('Address type:', typeof address);
+    console.log('Address truthy?:', !!address);
+    console.log('Address length:', address?.length);
 
-    if (address) {
-      console.log('Triggering map search with address:', address);
+    if (address && address.trim()) {
+      console.log('✓ Triggering map search with address:', address);
       setInputValue(address);
+      setValidationError('');
       onSearch(address);
     } else {
-      console.warn('No address found for opportunity:', opportunity);
+      console.error('✗ No valid address found');
+      console.log('Opportunity object keys:', Object.keys(opportunity));
       setValidationError('No address found for this opportunity');
     }
   };
