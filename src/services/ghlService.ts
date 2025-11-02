@@ -45,9 +45,9 @@ export async function searchOpportunities(
     // Use provided location ID or default
     const activeLocationId = locationId || GHL_LOCATION_ID;
 
-    // Build request body for v2 API
+    // Build request body for v2 API (use camelCase, not snake_case)
     const requestBody: any = {
-      location_id: activeLocationId,
+      locationId: activeLocationId,
     };
 
     if (query && query.trim()) {
