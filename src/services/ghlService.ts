@@ -76,7 +76,14 @@ export function formatOpportunityAddress(opportunity: GHLOpportunity): string | 
   if (postalCode) parts.push(postalCode);
   if (country) parts.push(country);
 
-  const formattedAddress = parts.length > 0 ? parts.join(', ') : null;
+  let formattedAddress = parts.length > 0 ? parts.join(', ') : null;
+
+  // If no structured address found, try to extract from opportunity name
+  if (!formattedAddress && opportunity.name) {
+    console.log('No structured address found, using opportunity name:', opportunity.name);
+    formattedAddress = opportunity.name;
+  }
+
   console.log('Formatted address:', formattedAddress);
 
   return formattedAddress;
