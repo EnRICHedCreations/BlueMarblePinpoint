@@ -4,7 +4,7 @@
  */
 
 import React, { useState, FormEvent } from 'react';
-import { searchOpportunities, GHLOpportunity } from '../services/ghlService';
+import { searchOpportunities, GHLOpportunity, formatOpportunityAddress } from '../services/ghlService';
 
 interface OpportunitiesSearchBarProps {
   onSelectOpportunity?: (opportunity: GHLOpportunity) => void;
@@ -99,23 +99,29 @@ export const OpportunitiesSearchBar: React.FC<OpportunitiesSearchBarProps> = ({ 
               Found {opportunities.length} opportunit{opportunities.length === 1 ? 'y' : 'ies'}
             </div>
             <div className="opportunities-list">
-              {opportunities.map((opp) => (
-                <div
-                  key={opp.id}
-                  className="opportunity-item"
-                  onClick={() => handleSelectOpportunity(opp)}
-                >
-                  <div className="opportunity-name">{opp.name}</div>
-                  {opp.contact?.name && (
-                    <div className="opportunity-contact">{opp.contact.name}</div>
-                  )}
-                  {opp.monetaryValue && (
-                    <div className="opportunity-value">
-                      ${opp.monetaryValue.toLocaleString()}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {opportunities.map((opp) => {
+                const address = formatOpportunityAddress(opp);
+                return (
+                  <div
+                    key={opp.id}
+                    className="opportunity-item"
+                    onClick={() => handleSelectOpportunity(opp)}
+                  >
+                    <div className="opportunity-name">{opp.name}</div>
+                    {opp.contact?.name && (
+                      <div className="opportunity-contact">{opp.contact.name}</div>
+                    )}
+                    {address && (
+                      <div className="opportunity-address">{address}</div>
+                    )}
+                    {opp.monetaryValue && (
+                      <div className="opportunity-value">
+                        ${opp.monetaryValue.toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

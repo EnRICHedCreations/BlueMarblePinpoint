@@ -19,6 +19,11 @@ export interface GHLOpportunity {
     name?: string;
     email?: string;
     phone?: string;
+    address1?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
   };
   monetaryValue?: number;
   assignedTo?: string;
@@ -30,6 +35,28 @@ export interface GHLSearchResult {
   success: boolean;
   opportunities?: GHLOpportunity[];
   error?: string;
+}
+
+/**
+ * Format address from opportunity contact data
+ */
+export function formatOpportunityAddress(opportunity: GHLOpportunity): string | null {
+  if (!opportunity.contact) {
+    return null;
+  }
+
+  const { address1, city, state, postalCode, country } = opportunity.contact;
+
+  // Build address parts that exist
+  const parts: string[] = [];
+
+  if (address1) parts.push(address1);
+  if (city) parts.push(city);
+  if (state) parts.push(state);
+  if (postalCode) parts.push(postalCode);
+  if (country) parts.push(country);
+
+  return parts.length > 0 ? parts.join(', ') : null;
 }
 
 /**

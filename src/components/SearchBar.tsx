@@ -8,6 +8,7 @@ import { validateAddress, sanitizeInput } from '../utils/validators';
 import { loadGoogleMapsScript } from '../utils/loadGoogleMaps';
 import { isInIframe } from '../utils/iframeDetection';
 import { OpportunitiesSearchBar } from './OpportunitiesSearchBar';
+import { GHLOpportunity, formatOpportunityAddress } from '../services/ghlService';
 
 interface SearchBarProps {
   onSearch: (address: string) => void;
@@ -26,6 +27,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
   useEffect(() => {
     setShowGHLSearch(isInIframe());
   }, []);
+
+  const handleOpportunitySelect = (opportunity: GHLOpportunity) => {
+    const address = formatOpportunityAddress(opportunity);
+    if (address) {
+      onSearch(address);
+      setInputValue(address);
+    } else {
+      setValidationError('No address found for this opportunity');
+    }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -169,7 +180,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
         )}
       </form>
 
-        {showGHLSearch && <OpportunitiesSearchBar />}
+        {showGHLSearch && <OpportunitiesSearchBar onSelectOpportunity={handleOpportunitySelect} />}
       </div>
     </div>
   );
