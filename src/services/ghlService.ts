@@ -24,7 +24,14 @@ export interface GHLOpportunity {
     state?: string;
     postalCode?: string;
     country?: string;
+    locationId?: string;
   };
+  // Address might also be at the opportunity level
+  address1?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
   monetaryValue?: number;
   assignedTo?: string;
   createdAt?: string;
@@ -41,11 +48,24 @@ export interface GHLSearchResult {
  * Format address from opportunity contact data
  */
 export function formatOpportunityAddress(opportunity: GHLOpportunity): string | null {
-  if (!opportunity.contact) {
-    return null;
-  }
+  console.log('Formatting address for opportunity:', opportunity);
 
-  const { address1, city, state, postalCode, country } = opportunity.contact;
+  // Check both contact level and opportunity level for address fields
+  const contactAddress = opportunity.contact;
+
+  // Try contact address first
+  let address1 = contactAddress?.address1;
+  let city = contactAddress?.city;
+  let state = contactAddress?.state;
+  let postalCode = contactAddress?.postalCode;
+  let country = contactAddress?.country;
+
+  // Fallback to opportunity level if contact fields are empty
+  if (!address1 && opportunity.address1) address1 = opportunity.address1;
+  if (!city && opportunity.city) city = opportunity.city;
+  if (!state && opportunity.state) state = opportunity.state;
+  if (!postalCode && opportunity.postalCode) postalCode = opportunity.postalCode;
+  if (!country && opportunity.country) country = opportunity.country;
 
   // Build address parts that exist
   const parts: string[] = [];
@@ -56,7 +76,10 @@ export function formatOpportunityAddress(opportunity: GHLOpportunity): string | 
   if (postalCode) parts.push(postalCode);
   if (country) parts.push(country);
 
-  return parts.length > 0 ? parts.join(', ') : null;
+  const formattedAddress = parts.length > 0 ? parts.join(', ') : null;
+  console.log('Formatted address:', formattedAddress);
+
+  return formattedAddress;
 }
 
 /**
@@ -103,9 +126,11 @@ export async function searchOpportunities(
     }
 
     const data = await response.json();
+    console.log('GHL API Response:', data);
 
     // Handle different response formats
     const opportunities = data.opportunities || data.data || [];
+    console.log('Parsed opportunities:', opportunities);
 
     return {
       success: true,

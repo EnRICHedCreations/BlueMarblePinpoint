@@ -29,11 +29,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = fals
   }, []);
 
   const handleOpportunitySelect = (opportunity: GHLOpportunity) => {
+    console.log('Opportunity selected:', opportunity);
     const address = formatOpportunityAddress(opportunity);
+    console.log('Extracted address:', address);
+
     if (address) {
-      onSearch(address);
+      console.log('Triggering map search with address:', address);
       setInputValue(address);
+      onSearch(address);
     } else {
+      console.warn('No address found for opportunity:', opportunity);
       setValidationError('No address found for this opportunity');
     }
   };
