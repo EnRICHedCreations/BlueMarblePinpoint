@@ -11,7 +11,6 @@ const STORAGE_KEY = 'geoflipper_user_email';
 export interface AuthResult {
   success: boolean;
   isMember?: boolean;
-  isPremiumAnnual?: boolean;
   error?: string;
   status?: number;
 }
@@ -26,7 +25,6 @@ export function isValidEmail(email: string): boolean {
 
 /**
  * Check membership status via API
- * Only allows Premium (Annual) members
  */
 export async function checkMemberStatus(email: string): Promise<AuthResult> {
   try {
@@ -43,20 +41,11 @@ export async function checkMemberStatus(email: string): Promise<AuthResult> {
 
     // Check if user is a member
     if (data.isMember === true) {
-      // Check if annual member (skool_annual_member === 1)
-      const isPremiumAnnual = data.member && data.member.skool_annual_member === 1;
-
-      if (isPremiumAnnual) {
-        console.log('✅ SUCCESS: Annual member confirmed.');
-        return { success: true, isMember: true, isPremiumAnnual: true };
-      } else {
-        console.log('❌ FAILURE: User is a member but not an annual member.');
-        console.log('Member data:', data.member);
-        return { success: true, isMember: true, isPremiumAnnual: false };
-      }
+      console.log('✅ SUCCESS: Member confirmed.');
+      return { success: true, isMember: true };
     } else {
       console.log('❌ FAILURE: User is NOT a member.');
-      return { success: true, isMember: false, isPremiumAnnual: false };
+      return { success: true, isMember: false };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {

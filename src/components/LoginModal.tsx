@@ -49,14 +49,14 @@ export const LoginModal: React.FC = () => {
         return;
       }
 
-      if (!result.isMember || !result.isPremiumAnnual) {
+      if (!result.isMember) {
         setIsUpgradeRequired(true);
         console.log('Access denied for:', trimmedEmail);
         return;
       }
 
       // Success - context will update and modal will disappear
-      console.log('Premium (Annual) member verified:', trimmedEmail);
+      console.log('Member verified:', trimmedEmail);
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
       setIsUpgradeRequired(false);
@@ -123,14 +123,14 @@ export const LoginModal: React.FC = () => {
               {error && <div className="error-message show">{error}</div>}
               {isUpgradeRequired && (
                 <div className="error-message show">
-                  Access denied, please upgrade to Annual at{' '}
+                  Access denied. This feature requires an active membership.{' '}
                   <a
-                    href="https://www.skool.com/how-to-wholesale/plans"
+                    href="https://www.skool.com/how-to-wholesale/about"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: 'inherit', textDecoration: 'underline' }}
                   >
-                    https://www.skool.com/how-to-wholesale/plans
+                    Join here
                   </a>
                 </div>
               )}
