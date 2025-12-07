@@ -7,7 +7,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { isValidEmail } from '../services/authService';
 
-export const LoginModal: React.FC = () => {
+interface LoginModalProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+  onSuccess?: () => void;
+}
+
+export const LoginModal: React.FC<LoginModalProps> = ({ isOpen = true, onClose, onSuccess }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -57,6 +63,7 @@ export const LoginModal: React.FC = () => {
 
       // Success - context will update and modal will disappear
       console.log('Member verified:', trimmedEmail);
+      onSuccess?.();
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
       setIsUpgradeRequired(false);
@@ -76,8 +83,10 @@ export const LoginModal: React.FC = () => {
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="login-modal active">
+    <div className="login-modal active" onClick={(e) => e.target === e.currentTarget && onClose?.()}>
       <div className="modal-content">
         <div className="modal-header">
           <div className="modal-icon">
